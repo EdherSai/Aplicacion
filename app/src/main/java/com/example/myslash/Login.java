@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
 
         if("".equals(userName.getText().toString()) || "".equals(Password.getText().toString()))
         {
-            mensaje = "Falta un Parametro";
+            mensaje = "Llena todos los campos";
         }else{
             if(userName.length() > 20 || Password.length() > 30){
                 mensaje = "Parametro Erroneo";
@@ -80,7 +80,7 @@ public class Login extends AppCompatActivity {
 
                     if("Usuario Encontrado".equals(mensaje)){
                         Toast.makeText(Login.this, mensaje, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Login.this, Website.class);
+                        Intent intent = new Intent(Login.this, ListMain.class);
                         intent.putExtra("numArchivo", numArchivo);
                         startActivity(intent);
                     }

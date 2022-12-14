@@ -23,7 +23,7 @@ public class EditList extends AppCompatActivity {
 
     private EditText Name, Password;
     private RadioButton Opcion1, Opcion2, Opcion3, Opcion4;
-    private int []imagenUser = { R.drawable.user,R.drawable.user1,R.drawable.user2,R.drawable.user3};
+    private int []imagenUser = { R.drawable.user,R.drawable.img1,R.drawable.img2,R.drawable.img3};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

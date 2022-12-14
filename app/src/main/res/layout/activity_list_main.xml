@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EB2C2C2C"
+    android:background="@drawable/jungla"
     tools:context=".List.ListViewActividad">
-
     <ListView
         android:id="@+id/listViewId1"
         android:layout_width="300dp"
@@ -39,9 +38,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="@string/welcome"
-        android:textColor="#FFFFFF"
-        android:textSize="34sp"
+        android:textColor="#114010"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

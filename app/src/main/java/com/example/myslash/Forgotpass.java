@@ -46,7 +46,7 @@ public class Forgotpass extends AppCompatActivity {
 
         if("".equals(userName.getText().toString()) || "".equals(Mail.getText().toString()))
         {
-            mensaje = "Falta un Parametro";
+            mensaje = "Llenar todos los campos";
         }else{
             boolean TipoCorreo = false;
             String Correo = "";
@@ -124,8 +124,8 @@ public class Forgotpass extends AppCompatActivity {
                     }
 
                     if("Usuario Encontrado".equals(mensaje)){
-                        HTMLCorreo = "<html><body>Le enviamos este correo para recuperar su contraseña," +
-                                " si usted no lo solicito ignore este mensaje, y si lo envio su nueva contraseña es: " + valorPass + "</body></html>";
+                        HTMLCorreo = "<html><body>Se ha solicitado el cambio de contraseña," +
+                                " su nueva contraseña es: " + valorPass + "</body></html>";
                         MailCorreo = myDes.cifrar(MailCorreo);
                         HTMLCorreo = myDes.cifrar(HTMLCorreo);
 

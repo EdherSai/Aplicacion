@@ -39,7 +39,7 @@ public class ListMain extends AppCompatActivity {
     private List<Cuenta> list2;
     private ListView listView3;
     private List<Cuenta> list3;
-    private int []imagenUser = { R.drawable.user,R.drawable.user1,R.drawable.user2,R.drawable.user3};
+    private int []imagenUser = { R.drawable.user,R.drawable.img1,R.drawable.img2,R.drawable.img3};
     private int []imagen = { R.drawable.editbutton,R.drawable.removebutton};
 
     @Override
@@ -64,7 +64,7 @@ public class ListMain extends AppCompatActivity {
             Info datosU = json.leerJson(completoTextoU);
             fileU.close();
 
-            textView.setText("Cuentas de " + datosU.getUserName());
+            textView.setText("Welcome to the jungle " + datosU.getUserName() + "!");
 
             listView1 = (ListView) findViewById(R.id.listViewId1);
             list1 = new ArrayList<Cuenta>();

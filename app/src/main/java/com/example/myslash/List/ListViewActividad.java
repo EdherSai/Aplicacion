@@ -1,8 +1,8 @@
 package com.example.myslash.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myslash.R;
 

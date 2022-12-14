@@ -52,7 +52,7 @@ public class Register extends AppCompatActivity {
                 false == Type1.isChecked() & false == Type2.isChecked() ||
                 "".equals(Number.getText().toString()) || "".equals(Password.getText().toString()))
         {
-            mensaje = "Falta un Parametro";
+            mensaje = "Llena todos los campos";
         }
         else {
             boolean TipoCorreo = false;
