@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.myslash.BD.DbInfo;
 import com.example.myslash.Encriptación.Sha1;
 import com.example.myslash.Json.Info;
 import com.example.myslash.Json.Json;
@@ -32,7 +33,7 @@ public class Login extends AppCompatActivity {
 
         if("".equals(userName.getText().toString()) || "".equals(Password.getText().toString()))
         {
-            mensaje = "Llena todos los campos";
+            mensaje = "Falta un Parametro";
         }else{
             if(userName.length() > 20 || Password.length() > 30){
                 mensaje = "Parametro Erroneo";
@@ -51,16 +52,9 @@ public class Login extends AppCompatActivity {
                     int x = 1;
                     int numArchivo = 0;
                     while (BucleArchivo) {
-                        File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "ArchivoMyPaginaWeb" + x + ".txt");
-                        if(Cfile.exists()) {
-                            BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("ArchivoMyPaginaWeb" + x + ".txt")));
-                            String lineaTexto = file.readLine();
-                            String completoTexto = "";
-                            while(lineaTexto != null){
-                                completoTexto = completoTexto + lineaTexto;
-                                lineaTexto = file.readLine();
-                            }
-                            file.close();
+                        DbInfo dbInfo = new DbInfo(Login.this);
+                        if (dbInfo.comprobarInfo(x)) {
+                            String completoTexto = dbInfo.verInfo(x);
 
                             Info datos = json.leerJson(completoTexto);
                             String Sha1Password2 = datos.getPassword();

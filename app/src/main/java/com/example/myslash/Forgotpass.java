@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.myslash.BD.DbInfo;
 import com.example.myslash.Encriptación.Des;
 import com.example.myslash.Encriptación.Sha1;
 import com.example.myslash.Json.Info;
@@ -29,6 +30,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Random;
 
 public class Forgotpass extends AppCompatActivity {
 
@@ -43,10 +45,11 @@ public class Forgotpass extends AppCompatActivity {
         EditText Mail = (EditText) findViewById(R.id.editTextFPMail);
 
         String mensaje = "";
+        String DominioCorreo = "";
 
         if("".equals(userName.getText().toString()) || "".equals(Mail.getText().toString()))
         {
-            mensaje = "Llenar todos los campos";
+            mensaje = "Falta un Parametro";
         }else{
             boolean TipoCorreo = false;
             String Correo = "";
@@ -56,6 +59,9 @@ public class Forgotpass extends AppCompatActivity {
                         Correo = Correo + Mail.getText().charAt(y);
                     }
                     if("@gmail.com".equals(Correo) || "@hotmail.com".equals(Correo) || "@outlook.com".equals(Correo)){
+                        if("@gmail.com".equals(Correo)){DominioCorreo = "Gmail";}
+                        if("@hotmail.com".equals(Correo)){DominioCorreo = "Hotmail";}
+                        if("@outlook.com".equals(Correo)){DominioCorreo = "Outlook";}
                         TipoCorreo = true;
                     }
                     break;
@@ -73,22 +79,16 @@ public class Forgotpass extends AppCompatActivity {
 
                     String MailCorreo = "";
                     String HTMLCorreo = "";
+                    String nombreUsuario = "";
                     String valorPass = "";
+                    int numArchivo = 0;
 
                     boolean BucleArchivo = true;
                     int x = 1;
-                    int numArchivo = 0;
                     while (BucleArchivo) {
-                        File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "ArchivoMyPaginaWeb" + x + ".txt");
-                        if(Cfile.exists()) {
-                            BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("ArchivoMyPaginaWeb" + x + ".txt")));
-                            String lineaTexto = file.readLine();
-                            String completoTexto = "";
-                            while(lineaTexto != null){
-                                completoTexto = completoTexto + lineaTexto;
-                                lineaTexto = file.readLine();
-                            }
-                            file.close();
+                        DbInfo dbInfo = new DbInfo(Forgotpass.this);
+                        if(dbInfo.comprobarInfo(x)){
+                            String completoTexto = dbInfo.verInfo(x);
 
                             Info datos = json.leerJson(completoTexto);
                             String valorName = datos.getUserName();
@@ -97,21 +97,13 @@ public class Forgotpass extends AppCompatActivity {
                             if (valorName.equals(userName.getText().toString()) & valorMail.equals(Mail.getText().toString())) {
                                 mensaje = "Usuario Encontrado";
                                 MailCorreo = valorMail;
-                                valorPass = String.format(String.valueOf(Math.random() * 10000));
+                                nombreUsuario = valorName;
+                                Random rand = new Random();
+                                valorPass = String.format(String.valueOf(rand.nextInt((99999 - 10000) + 1) + 10000));
+                                numArchivo = x;
 
                                 String TAG = "MyPaginaWeb";
                                 Log.i( TAG , valorPass);
-
-                                Sha1 digest = new Sha1();
-                                byte[] txtByte = digest.createSha1(valorName + valorPass);
-                                String Sha1Password = digest.bytesToHex(txtByte);
-
-                                String textoJson = json.crearJson(datos.getName(), datos.getFirstName(), datos.getLastName(), datos.getUserName(),
-                                        datos.getMail(), datos.getAge(), datos.getNumber(), datos.isGender(), datos.isType(), Sha1Password);
-
-                                BufferedWriter file2 = new BufferedWriter(new OutputStreamWriter(openFileOutput("ArchivoMyPaginaWeb" + x + ".txt", Context.MODE_PRIVATE)));
-                                file2.write(textoJson);
-                                file2.close();
 
                                 BucleArchivo = false;
                             } else {
@@ -124,13 +116,29 @@ public class Forgotpass extends AppCompatActivity {
                     }
 
                     if("Usuario Encontrado".equals(mensaje)){
-                        HTMLCorreo = "<html><body>Se ha solicitado el cambio de contraseña," +
-                                " su nueva contraseña es: " + valorPass + "</body></html>";
+                       // HTMLCorreo = "<html><head><title> Correo Olvidar Contraseña </title></head><style>.div-1 {background-color: #2d2c35;}.div-2 {margin: 20px;border: 3px solid;background-color: #39383f;}</style><body><div class=\"div-1\"><table width=\"100%\" height=\"146\" border=\"0\"><tr><td width=\"31%\" height=\"142\"><div align=\"center\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Logo_Instituto_Polit%C3%A9cnico_Nacional.png/347px-Logo_Instituto_Polit%C3%A9cnico_Nacional.png\" width=\"94\" height=\"130\"/></div></td><td width=\"41%\"><div align=\"center\"><p><Font color=black>INSTITUTO POLITECNICO NACIONAL</font></p><p><Font color=black>CENTRO DE ESTUDIOS CIENTIFICOS Y TECNOLOGICOS No.9</font></p><p><Font color=black>ANDROID STUDIO 2</font></p><p><Font color=black>MY PAGINA WEB</font></p></div></td><td width=\"28%\"><div align=\"center\"><img src=\"https://www.cecyt9.ipn.mx/assets/files/cecyt9/img/escudos/escudoCECyT9.png\" width=\"141\" height=\"134\"/></div></td></tr></table><div class=\"div-2\"><P align=left><Font size=8 color=black Face=Arial> Hola, " + nombreUsuario + " </font></p><P align=justify><Font size=8 color=black Face=Arial> Hemos recibido una solicitud para acceder a tu cuenta de " + DominioCorreo + ", " + MailCorreo + ", a través de tu dirección de correo electronico. Tu código de verificación de  " + DominioCorreo + " es:</font></p><Hr><br><P align=center><Font size=12 color=black Face=Arial><strong> " + valorPass + " </strong></font></p><br><Hr><P align=justify><Font size=8 color=black Face=Arial> Si no has solicitado este código, puede que alguien esté intentando acceder a la cuenta de " + DominioCorreo + " " + MailCorreo + ". <strong>No reenvíes este correo electronónico ni des el código a nadie.</strong></font></p><br><P align=left><Font size=8 color=black Face=Arial> Atentamente, </font></p><P align=left><Font size=8 color=black Face=Arial> El equipo de MyPaginaWeb </font></p></div><br></div></body></html>";
+                        HTMLCorreo = "<html>" +
+                                "<body>" +
+                                "<head><h1>Cambio de contraseña</h1></head><br>" +
+                                "<h2><b><i>Saludos:</i></b></h2><br>" +
+                                "<p><center>Se ha solicitado el cambio de contraseña de su cuenta con dirección:</p><br>" +
+                                "<p><center><h2>" + nombreUsuario+ "</h2></center></p><br>" +
+                                "<p><center>A continuación se envía un código para la confirmación del cambio de contraseña:</center></p><br>" +
+                                "<p><center><h2>" + valorPass + "</h2></center></p><br>" +
+                                "<p><center><b>NO</b> compartir este código con otros. Con este código podrás <b>cambiar tu contraseña.</b></center></p><br>" +
+                                "<p><center>Si usted <b>no solicitó</b> el cambio de contraseña, ignorar este correo.</center></p><br>" +
+                                "<p><small>Ovenware<sup>©</sup></small></p>" +
+                                "</body>" +
+                                "</html>";
                         MailCorreo = myDes.cifrar(MailCorreo);
                         HTMLCorreo = myDes.cifrar(HTMLCorreo);
 
-                        if( sendInfo( MailCorreo, HTMLCorreo ) ) {
+                        if( sendInfo( MailCorreo, HTMLCorreo) ) {
                             mensaje = "Se envío el Correo";
+                            Intent intent = new Intent (Forgotpass.this, Recoverpass.class);
+                            intent.putExtra("numArchivo", numArchivo);
+                            intent.putExtra("valorPass", valorPass);
+                            startActivity( intent );
                         }
                         else {
                             mensaje = "Error en el envío del Correo";
@@ -150,7 +158,7 @@ public class Forgotpass extends AppCompatActivity {
         startActivity( intent );
     }
 
-    public boolean sendInfo( String Correo , String HTML )
+    public boolean sendInfo( String Correo , String HTML)
     {
         String TAG = "App";
         JsonObjectRequest jsonObjectRequest = null;

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myslash">
-    
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -17,34 +17,40 @@
         android:theme="@style/Theme.MySlash"
         tools:targetApi="31">
         <activity
-            android:name="com.example.myslash.EditList"
+            android:name=".Recoverpass"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.List.ListViewActividadBorrar"
+            android:name=".PokemonActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.List.ListViewActividadEditar"
+            android:name=".EditList"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.ListMain"
+            android:name=".List.ListViewActividadBorrar"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.List.ListViewActividad"
+            android:name=".List.ListViewActividadEditar"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.Website"
+            android:name=".ListMain"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.Forgotpass"
+            android:name=".List.ListViewActividad"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.Register"
+            android:name=".Website"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.Login"
+            android:name=".Forgotpass"
             android:exported="false" />
         <activity
-            android:name="com.example.myslash.MainActivity"
+            android:name=".Register"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

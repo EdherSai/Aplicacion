@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myslash.BD.DbCuenta;
+import com.example.myslash.BD.DbInfo;
 import com.example.myslash.Json.Cuenta;
 import com.example.myslash.Json.Info;
 import com.example.myslash.Json.Json;
@@ -39,8 +41,8 @@ public class ListMain extends AppCompatActivity {
     private List<Cuenta> list2;
     private ListView listView3;
     private List<Cuenta> list3;
-    private int []imagenUser = { R.drawable.user,R.drawable.img1,R.drawable.img2,R.drawable.img3};
-    private int []imagen = { R.drawable.editbutton,R.drawable.removebutton};
+    private int []imagenUser = { R.drawable.user,R.drawable.img1,R.drawable.img2,R.drawable.img3 };
+    private int []imagen = { R.drawable.editbutton,R.drawable.removebutton };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,17 +56,11 @@ public class ListMain extends AppCompatActivity {
         Json json = new Json();
 
         try {
-            BufferedReader fileU = new BufferedReader(new InputStreamReader(openFileInput("ArchivoMyPaginaWeb" + numArchivo + ".txt")));
-            String lineaTextoU = fileU.readLine();
-            String completoTextoU = "";
-            while(lineaTextoU != null){
-                completoTextoU = completoTextoU + lineaTextoU;
-                lineaTextoU = fileU.readLine();
-            }
+            DbInfo dbInfo = new DbInfo(ListMain.this);
+            String completoTextoU = dbInfo.verInfo(numArchivo);
             Info datosU = json.leerJson(completoTextoU);
-            fileU.close();
 
-            textView.setText("Welcome to the jungle " + datosU.getUserName() + "!");
+            textView.setText("Cuentas de " + datosU.getUserName());
 
             listView1 = (ListView) findViewById(R.id.listViewId1);
             list1 = new ArrayList<Cuenta>();
@@ -78,16 +74,9 @@ public class ListMain extends AppCompatActivity {
             boolean BucleArchivo = true;
             int x = 1;
             while (BucleArchivo) {
-                File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "ArchivoMyPaginaWeb" + numArchivo + "." + x + ".txt");
-                if(Cfile.exists()) {
-                    BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("ArchivoMyPaginaWeb" + numArchivo + "." + x + ".txt")));
-                    String lineaTexto = file.readLine();
-                    String completoTexto = "";
-                    while(lineaTexto != null){
-                        completoTexto = completoTexto + lineaTexto;
-                        lineaTexto = file.readLine();
-                    }
-                    file.close();
+                DbCuenta dbCuenta = new DbCuenta(ListMain.this);
+                if(dbCuenta.comprobarCuenta(numArchivo, x)){
+                    String completoTexto = dbCuenta.verCuenta(numArchivo, x);
 
                     Cuenta datos = json.leerJsonCuenta(completoTexto);
 
@@ -163,28 +152,17 @@ public class ListMain extends AppCompatActivity {
             boolean BucleArchivo = true;
             int x = (i + 1);
             while (BucleArchivo) {
-                File Cfile1 = new File(getApplicationContext().getFilesDir() + "/" + "ArchivoMyPaginaWeb" + numArchivo + "." + x + ".txt");
-                File Cfile2 = new File(getApplicationContext().getFilesDir() + "/" + "ArchivoMyPaginaWeb" + numArchivo + "." + (x + 1) + ".txt");
-                if (Cfile1.exists() & Cfile2.exists()) {
+                DbCuenta dbCuenta = new DbCuenta(ListMain.this);
+                if (dbCuenta.comprobarCuenta(numArchivo, x) & dbCuenta.comprobarCuenta(numArchivo, (x + 1))){
                     int numArchivoCuenta = getIntent().getExtras().getInt("numArchivoCuenta");
-                    BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("ArchivoMyPaginaWeb" + numArchivo + "." + (x + 1) + ".txt")));
-                    String lineaTexto = file.readLine();
-                    String completoTexto = "";
-                    while(lineaTexto != null){
-                        completoTexto = completoTexto + lineaTexto;
-                        lineaTexto = file.readLine();
-                    }
-                    file.close();
-
-                    BufferedWriter fileC = new BufferedWriter(new OutputStreamWriter(openFileOutput("ArchivoMyPaginaWeb" + numArchivo + "." + x + ".txt", Context.MODE_PRIVATE)));
-                    fileC.write(completoTexto);
-                    fileC.close();
+                    String completoTexto = dbCuenta.verCuenta(numArchivo, (x + 1));
+                    dbCuenta.editarCuenta(numArchivo, x, completoTexto);
 
                     x = x + 1;
                 }
-                if (Cfile1.exists() & !Cfile2.exists()) {
-                    File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "ArchivoMyPaginaWeb" + numArchivo + "." + x + ".txt");
-                    Cfile.delete();
+                if (dbCuenta.comprobarCuenta(numArchivo, x) & !dbCuenta.comprobarCuenta(numArchivo, (x + 1))){
+                    dbCuenta.eliminarCuenta(numArchivo, x);
+
                     Intent intent = new Intent (ListMain.this, ListMain.class);
                     intent.putExtra("numArchivo", numArchivo);
                     startActivity( intent );
@@ -209,12 +187,19 @@ public class ListMain extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String seleccion = null;
         switch(item.getItemId()){
+            case R.id.API:
+                int numArchivo = getIntent().getExtras().getInt("numArchivo");
+                Intent intent0 = new Intent(ListMain.this, PokemonActivity.class);
+                intent0.putExtra("numArchivo", numArchivo);
+                intent0.putExtra("numContext", 1);
+                startActivity( intent0 );
+                break;
             case R.id.MenuCerrarSesionrId:
                 Intent intent1 = new Intent (ListMain.this, Login.class);
                 startActivity( intent1 );
                 break;
             case R.id.MenuNuevoId:
-                int numArchivo = getIntent().getExtras().getInt("numArchivo");
+                numArchivo = getIntent().getExtras().getInt("numArchivo");
                 Intent intent2 = new Intent (ListMain.this, EditList.class);
                 intent2.putExtra("numArchivo", numArchivo);
                 intent2.putExtra("numContext", 1);
