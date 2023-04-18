@@ -44,4 +44,10 @@
     <string name="list_image3">Opcion 2</string>
     <string name="list_image4">Opcion 3</string>
     <string name="list_button">Enviar</string>
+    <string name="list_button_takePhoto">Tomar foto</string>
+    <string name="list_button_selectPhoto">Subir foto</string>
+    <string name="list_button_next">Siguiente</string>
+    <string name="list_button_back">Anterior</string>
+    <string name="list_map_update">Actualizar</string>
+    <string name="list_map_back">Volver</string>
 </resources>

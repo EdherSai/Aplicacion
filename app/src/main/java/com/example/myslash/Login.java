@@ -26,8 +26,8 @@ public class Login extends AppCompatActivity {
     }
 
     public void IniciarSesion (View v){
-        EditText userName = (EditText) findViewById(R.id.editTextISuserName);
-        EditText Password = (EditText) findViewById(R.id.editTextISPassword);
+        EditText userName = (EditText) findViewById(R.id.editTextLuserName);
+        EditText Password = (EditText) findViewById(R.id.editTextLPassword);
 
         String mensaje = "";
 
@@ -74,8 +74,9 @@ public class Login extends AppCompatActivity {
 
                     if("Usuario Encontrado".equals(mensaje)){
                         Toast.makeText(Login.this, mensaje, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Login.this, ListMain.class);
+                        Intent intent = new Intent(Login.this, Website.class);
                         intent.putExtra("numArchivo", numArchivo);
+                        intent.putExtra("numLista", 1);
                         startActivity(intent);
                     }
 

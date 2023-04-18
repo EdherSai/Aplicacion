@@ -6,44 +6,69 @@
     android:layout_height="match_parent"
     android:background="@drawable/jungla"
     tools:context=".List.ListViewActividad">
-    <ListView
-        android:id="@+id/listViewId1"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ListView
-        android:id="@+id/listViewId2"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/listViewId3"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ListView
-        android:id="@+id/listViewId3"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
-        android:id="@+id/textViewL1"
+        android:id="@+id/textViewLM1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="@string/welcome"
         android:textColor="#114010"
-        android:textSize="22sp"
+        android:textSize="34sp"
         android:textStyle="bold"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/listViewLMContent"
+        android:layout_width="250dp"
+        android:layout_height="460dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLM1" />
+
+    <ListView
+        android:id="@+id/listViewLMMap"
+        android:layout_width="50dp"
+        android:layout_height="460dp"
+        app:layout_constraintEnd_toStartOf="@+id/listViewLMEdit"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLM1" />
+
+    <ListView
+        android:id="@+id/listViewLMEdit"
+        android:layout_width="50dp"
+        android:layout_height="460dp"
+        app:layout_constraintEnd_toStartOf="@+id/listViewLMRemove"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLM1" />
+
+    <ListView
+        android:id="@+id/listViewLMRemove"
+        android:layout_width="50dp"
+        android:layout_height="460dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLM1" />
+
+    <Button
+        android:id="@+id/buttonLMAnt"
+        android:layout_width="120dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#114010"
+        android:text="@string/list_button_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listViewLMContent"
+        />
+
+    <Button
+        android:id="@+id/buttonLMSig"
+        android:layout_width="120dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="#114010"
+        android:text="@string/list_button_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listViewLMContent"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

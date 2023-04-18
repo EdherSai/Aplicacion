@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -34,15 +35,15 @@ public class Register extends AppCompatActivity {
 
     public void Registrarse (View v){
 
-        EditText Name = (EditText) findViewById(R.id.editTextELName);
-        EditText firstName = (EditText) findViewById(R.id.editTextElPassword);
+        EditText Name = (EditText) findViewById(R.id.editTextRName);
+        EditText firstName = (EditText) findViewById(R.id.editTextRfirstName);
         EditText lastName = (EditText) findViewById(R.id.editTextRlastName);
         EditText userName = (EditText) findViewById(R.id.editTextRuserName);
         EditText Mail = (EditText) findViewById(R.id.editTextRMail);
         EditText Age = (EditText) findViewById(R.id.editTextRAge);
         EditText Number = (EditText) findViewById(R.id.editTextRNumber);
-        RadioButton Gender1 = (RadioButton) findViewById(R.id.radioButtonEL1);
-        RadioButton Gender2 = (RadioButton) findViewById(R.id.radioButtonEL2);
+        RadioButton Gender1 = (RadioButton) findViewById(R.id.radioButtonRGender1);
+        RadioButton Gender2 = (RadioButton) findViewById(R.id.radioButtonRGender2);
         RadioButton Type1 = (RadioButton) findViewById(R.id.radioButtonRType1);
         RadioButton Type2 = (RadioButton) findViewById(R.id.radioButtonRType2);
         EditText Password = (EditText) findViewById(R.id.editTextRPassword);
@@ -143,6 +144,13 @@ public class Register extends AppCompatActivity {
                                 Type2.setChecked(false);
                                 Password.setText("");
                                 BucleArchivo = false;
+                                new Handler( ).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run(){
+                                        Intent intent = new Intent( Register.this, Login.class);
+                                        startActivity( intent );
+                                    }
+                                } , 1500 );
                             } else {
                                 mensaje = "Error al Hacer Registro";
                             }
